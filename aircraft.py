@@ -1,7 +1,7 @@
 import time
 
 import pygame
-
+from BulletClass import Bullet
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 
 class UserPlane:
@@ -14,6 +14,11 @@ class UserPlane:
         self.y = SCREEN_HEIGHT/4*3
         # attribute of airplane
         self.speed = 10
+
+        # list for bullet
+
+        self.bullets = []
+
 
     def key_control(self):
 
@@ -31,13 +36,22 @@ class UserPlane:
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             self.y += self.speed
 
-        # future definition for fire
+        # press space for fire
         if keys[pygame.K_SPACE]:
-            pass
+            bullet = Bullet(self.x, self.y,self.player.get_width())
+
+            # add bullet at list
+
+            self.bullets.append(bullet)
+
 
     # display airplane in screen
     def display(self, screen):
         screen.blit(self.player, (self.x, self.y))
+
+        for bullet in self.bullets:
+            bullet.auto_move()
+            bullet.display(screen)
 
 def init_screen():
     screen=pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), 0, 32)

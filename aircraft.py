@@ -1,7 +1,9 @@
 import time
 
 import pygame
-from BulletClass import Bullet
+
+from bulletClass import Bullet
+from enemies import EnemyPlane
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 
 class UserPlane:
@@ -50,8 +52,10 @@ class UserPlane:
         screen.blit(self.player, (self.x, self.y))
 
         for bullet in self.bullets:
-            bullet.auto_move()
+            limit = bullet.auto_move()
             bullet.display(screen)
+            if (limit):
+                self.bullets.remove(bullet)
 
 def init_screen():
     screen=pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), 0, 32)
@@ -64,7 +68,7 @@ def init_screen():
     player.display(screen)
 
 
-
+    enemy = EnemyPlane(SCREEN_WIDTH, SCREEN_HEIGHT)
 
     while True:
         # put background in screen
@@ -80,7 +84,10 @@ def init_screen():
         player.key_control()
         # display screen
         player.display(screen)
+        enemy.display(screen)
+        enemy.auto_move(SCREEN_HEIGHT)
         pygame.display.update()
+
         time.sleep(0.01)
 
 
